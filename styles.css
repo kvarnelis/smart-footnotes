@@ -1,0 +1,71 @@
+/* Auto-numbered footnote markers in reading view */
+.uuid-footnote-ref {
+  font-size: 0.75em;
+  vertical-align: super;
+  line-height: 0;
+  text-decoration: none;
+}
+
+.uuid-footnote-ref a {
+  text-decoration: none;
+  color: var(--link-color);
+}
+
+.uuid-footnote-ref a:hover {
+  text-decoration: underline;
+}
+
+/* In-text footnote refs in Editing view: render `[^12]` as a superscript `12`
+   while leaving the raw Markdown available when the cursor enters the token. */
+.cm-editor .uuid-footnote-editor-ref {
+  color: var(--link-color);
+  cursor: pointer;
+  font-size: 0.75em;
+  font-variant-numeric: tabular-nums;
+  line-height: 0;
+  position: relative;
+  text-decoration: none;
+  top: -0.45em;
+}
+
+.cm-editor .uuid-footnote-editor-ref:hover {
+  text-decoration: underline;
+}
+
+/* Footnote definitions section */
+.uuid-footnotes-section {
+  margin-top: 2em;
+  padding-top: 1em;
+  border-top: 1px solid var(--background-modifier-border);
+  font-size: 0.9em;
+}
+
+.uuid-footnotes-section ol {
+  padding-left: 1.5em;
+}
+
+.uuid-footnotes-section li {
+  margin-bottom: 0.5em;
+}
+
+.uuid-footnotes-section .backref {
+  margin-left: 0.5em;
+  text-decoration: none;
+  color: var(--text-muted);
+}
+
+.uuid-footnotes-section .backref:hover {
+  color: var(--link-color);
+}
+
+/* Keep UUID labels internal in rendered footnote lists. The numeric list marker
+   remains visible; the raw `fn-...` label should never be visible to readers. */
+.uuid-footnote-definition[data-footnote-number] {
+  scroll-margin-top: 6rem;
+}
+
+.uuid-footnote-definition[data-footnote-number] .footnote-id,
+.uuid-footnote-definition[data-footnote-number] .footnote-label,
+.uuid-footnote-definition[data-footnote-number] [data-footnote-id] {
+  display: none !important;
+}

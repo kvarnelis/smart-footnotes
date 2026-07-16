@@ -1,0 +1,10 @@
+{
+  "id": "uuid-footnotes",
+  "name": "Smart Footnotes",
+  "version": "0.1.0",
+  "minAppVersion": "1.4.0",
+  "description": "Insert normal numbered Markdown footnotes and renumber them in document order. Compatible with WordPress footnote blocks.",
+  "author": "kazys",
+  "authorUrl": "https://varnelis.net",
+  "isDesktopOnly": false
+}
