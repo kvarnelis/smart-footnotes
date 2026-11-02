@@ -357,12 +357,6 @@ module.exports = class SmartFootnotesPlugin extends Plugin {
     }
 
     this.addCommand({
-      id: "insert-numbered-footnote",
-      name: "Insert numbered footnote",
-      checkCallback: (checking) => this.runInsertFootnoteCommand(checking),
-    });
-
-    this.addCommand({
       id: "insert-footnote",
       name: "Insert footnote",
       checkCallback: (checking) => this.runInsertFootnoteCommand(checking),

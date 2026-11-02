@@ -4,7 +4,7 @@ One set of Markdown footnotes for Obsidian, WordPress, and Word. Insert and renu
 
 ## Commands
 
-- **Insert footnote** and **Insert numbered footnote** do the same thing: insert a marker at the cursor, append its definition, renumber, and move the cursor to the definition. Use Editing view.
+- **Insert footnote** inserts a numbered marker at the cursor, appends its definition, renumbers, and moves the cursor to the definition. Use Editing view.
 - **Renumber footnotes** assigns numbers in the order references appear in the document.
 - **Refresh WordPress footnotes block** creates or replaces the generated block at the end of the note. If there are no referenced footnotes, it removes the existing block.
 
