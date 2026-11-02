@@ -107,16 +107,14 @@ function renumberFootnotes(source) {
     return { source, inserted, repeated: [] };
   }
 
-  const renumbered = source.replace(FOOTNOTE_REF_RE, (full, id) => {
-    const next = map.get(id);
-    return next ? `[^${next}]` : full;
-  });
-
   const output = [];
-  for (const line of renumbered.split(/\r?\n/)) {
+  for (const line of source.split(/\r?\n/)) {
     const definition = line.match(FOOTNOTE_DEF_RE);
     if (!definition) {
-      output.push(line);
+      output.push(line.replace(FOOTNOTE_REF_RE, (full, id) => {
+        const next = map.get(id);
+        return next ? `[^${next}]` : full;
+      }));
       continue;
     }
 
@@ -135,6 +133,22 @@ function renumberFootnotes(source) {
   return { source: output.join("\n"), inserted, repeated: [] };
 }
 
+function renderInlineMarkdown(value) {
+  const escaped = escapeHtml(value);
+  // Process each token once so markup inside code and links stays literal.
+  const token = /`([^`\n]+)`|\[([^\]\n]+)\]\((https?:\/\/[^\s()]+)\)|\*\*([^*\n]+)\*\*|\*([^*\n]+)\*|_([^_\n]+)_/g;
+  return escaped.replace(token, (whole, code, label, url, strong, star, underscore) => {
+    if (code !== undefined) return `<code>${code}</code>`;
+    if (label !== undefined) {
+      // Quotes or angle brackets in a URL cannot be allowed into an attribute.
+      if (/&(?:quot|lt|gt);/i.test(url)) return whole;
+      return `<a href="${url}">${label}</a>`;
+    }
+    if (strong !== undefined) return `<strong>${strong}</strong>`;
+    return `<em>${star !== undefined ? star : underscore}</em>`;
+  });
+}
+
 function buildWordPressFootnotes(source) {
   const { source: renumbered } = renumberFootnotes(source);
   const order = collectFootnoteOrder(renumbered);
@@ -145,7 +159,7 @@ function buildWordPressFootnotes(source) {
   }
 
   const items = order
-    .map((id) => `<li id="fn-${escapeHtml(id)}">${escapeHtml(definitions.get(id) || "")}</li>`)
+    .map((id) => `<li id="fn-${escapeHtml(id)}">${renderInlineMarkdown(definitions.get(id) || "")}</li>`)
     .join("\n");
 
   return `${WORDPRESS_FOOTNOTES_START}\n<ol class="wp-block-footnotes">\n${items}\n</ol>\n${WORDPRESS_FOOTNOTES_END}`;
